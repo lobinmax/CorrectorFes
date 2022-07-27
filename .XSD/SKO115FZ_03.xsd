@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="data_types.xsd"/>
+
+  <!-- Сообщение о принятых мерах по замораживанию (блокированию) денежных средств или иного имущества организаций и (или) физических лиц --> 	
+	
+  <xs:element name="СообщПринМерыКО">
+		<xs:annotation>
+			<xs:documentation>
+				Сообщение о принятых мерах по замораживанию (блокированию) денежных средств или иного имущества организаций и (или) физических лиц
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="СлужЧасть" type="СлужЧастьТип">
+					<xs:annotation>
+						<xs:documentation>Служебная часть электронного сообщения</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ИнформЧасть">
+					<xs:annotation>
+						<xs:documentation>Информационная часть электронного сообщения</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ИнфБанк" type="Банк">
+								<xs:annotation>
+									<xs:documentation>
+										Информация о кредитной организации (филиале кредитной организации), передающей (передающем) сведения
+									</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="СведКО" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="ПризнакПредставСвед">
+											<xs:annotation>
+												<xs:documentation>
+													Признак представления сведений в уполномоченный орган филиалом кредитной организации
+												</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:pattern value="0|1"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="ИнфФилиал" type="Филиал" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>
+													Информация о филиале кредитной организации, представляющем сведения
+												</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="Меры" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>
+													Сведения о примененных мерах по замораживанию (блокированию) денежных средств или иного имущества
+												</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="НомерЗаписи" type="ИдентификаторЗаписи">
+														<xs:annotation>
+															<xs:documentation>Номер записи в ФЭС</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ТипЗаписи">
+														<xs:annotation>
+															<xs:documentation>Тип записи в ФЭС</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:pattern value="[1-4]"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>											
+													<xs:element name="МераОснование" type="ОснованиеПримененияМер" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Основания применения меры</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ДатаБлок" type="ДатаТип">
+														<xs:annotation>
+															<xs:documentation>Дата применения мер по замораживанию (блокированию)</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ВремяБлок" type="ВЧПТип">
+														<xs:annotation>
+															<xs:documentation>Время применения мер по замораживанию (блокированию)</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ВидСредств">
+														<xs:annotation>
+															<xs:documentation>
+																Вид денежных средств или имущества, в отношении которых применены меры по замораживанию (блокированию)
+															</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:pattern value="[1-7]"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>													
+													<xs:element name="НомерСчетСейф" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>
+																Номер счета (номер индивидуального банковского сейфа)
+															</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:minLength value="1"/>
+																<xs:maxLength value="34"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="КодВал" type="КодВалТип" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>
+																Код валюты, в которой ведется учет замороженных (заблокированных) денежных средств
+															</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="СумДенежСредств" type="СуммаТип" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Сумма денежных средств</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="СумРуб" type="СуммаТип" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>
+																Сумма денежных средств или имущества, в отношении которых применены меры 
+																по замораживанию (блокированию) в рублевом эквиваленте
+															</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ЦенБумаги" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Сведения о ценных бумагах</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:pattern value="1|2"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="СтоимостьЦенБумаг" type="СуммаТип" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Номинальная стоимость ценных бумаг</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="РасчетСтоимость" type="СуммаТип" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Рыночная (расчетная) стоимость ценных бумаг</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Коммент" type="Т2000" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Дополнительные сведения</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+							    </xs:complexType>
+							</xs:element>	
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

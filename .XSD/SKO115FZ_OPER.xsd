@@ -1,0 +1,614 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">	
+  <xs:include schemaLocation="data_types.xsd"/>	
+	
+  <xs:element name="СообщОперКО">
+	  <xs:annotation>
+		  <xs:documentation>
+			  Сообщение об операциях, обязательному контролю, о подозрительных операциях, а также об операциях, 
+			  приостановленных в соответствии с пунктом 10 статьи 7 и (или) пунктом 8 статьи 7.5 Федерального закона № 115-ФЗ
+		  </xs:documentation>
+	  </xs:annotation>
+	  <xs:complexType>
+			<xs:sequence>
+				<xs:element name="СлужЧасть" type="СлужЧастьТип">
+					<xs:annotation>
+						<xs:documentation>Служебная часть электронного сообщения</xs:documentation>
+					</xs:annotation>
+				</xs:element> 
+				<xs:element name="ИнформЧасть">
+					<xs:annotation>
+						<xs:documentation>Информационная часть электронного сообщения</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ИнфБанк" type="Банк">
+								<xs:annotation>
+									<xs:documentation>
+										Информация о кредитной организации (филиале кредитной организации), передающей (передающем) сведения
+									</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="СведКО" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="ПризнакПредставСвед">
+											<xs:annotation>
+												<xs:documentation>
+													Признак представления сведений в уполномоченный орган филиалом кредитной организации
+												</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:pattern value="0|1"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="ИнфФилиал" type="Филиал" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>
+													Информация о филиале кредитной организации, представляющем сведения
+												</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="Операция" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Сведения об операции</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="НомерЗаписи" type="ИдентификаторЗаписи">
+														<xs:annotation>
+															<xs:documentation>Номер записи в ФЭС</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ТипЗаписи">
+														<xs:annotation>
+															<xs:documentation>Тип записи</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:pattern value="[1-4]"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="НомерОперация" type="Т100" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Уникальный номер операции</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ПризнФТр" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>
+																Признак операции, связанной с финансированием терроризма 
+																или распространения оружия массового уничтожения
+															</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:pattern value="[0-5]"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="ДатаОперации" type="ДатаТип">
+														<xs:annotation>
+															<xs:documentation>Дата совершения (приостановления) операции </xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ДатаВыявления" type="ДатаТип" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Дата выявления (приостановления) операции</xs:documentation>
+														</xs:annotation>
+													</xs:element>																																							
+													<xs:element name="КодПризнОперации">
+														<xs:annotation>
+															<xs:documentation>Код признака операции (сделки)</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:pattern value="[1-3]|[5-7]"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="ПризнакОперацияЭСП" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Признак совершения операции с использованием ЭСП</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:pattern value="[1-4]"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>																										
+													<xs:element name="НаимПлатежнаяСистема1" type="Т100" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Наименование платежной системы на стороне лица, совершающего операцию</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="НаимПлатежнаяСистема2" type="Т100" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Наименование платежной системы на стороне получателя по операции</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ВремяТранзакцияЭСП" type="ВЧПТип" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Время совершения операции с использованием ЭСП</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="КодОперации">
+														<xs:annotation>
+															<xs:documentation>Код вида операции</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:pattern value="[0-9]{4}"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="ДопКодОперации" minOccurs="0" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Дополнительный код вида операции</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:pattern value="[0-9]{4}"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="ПризнНеобОперации" minOccurs="0" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Код признака необычной операции</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:pattern value="[0-9]{4}"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="КодВал" type="КодВалТип">
+														<xs:annotation>
+															<xs:documentation>Код валюты</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="СумОперации" type="СуммаТип">
+														<xs:annotation>
+															<xs:documentation>Сумма операции в валюте ее проведения</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="СумРуб" type="СуммаТип">
+														<xs:annotation>
+															<xs:documentation>Сумма операции в рублевом эквиваленте</xs:documentation>
+														</xs:annotation>
+													</xs:element>																										
+													<xs:element name="КодВалКонверсия" type="КодВалТип" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Код продаваемой валюты</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="СумКонверсия" type="СуммаТип" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Сумма продаваемой валюты</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="СведДрагМеталл" type="ДрагМеталл" minOccurs="0" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>
+																Сведения о драгоценных металлах, драгоценных камнях, ювелирных изделиях и ломе из таких изделий
+															</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ОснованиеОп" type="Документ" minOccurs="0" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Основание совершения операции</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="НазначениеПлатежа" type="Т2000П">
+														<xs:annotation>
+															<xs:documentation>Назначение платежа</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ХарактерОп" type="Т2000П">
+														<xs:annotation>
+															<xs:documentation>Характеристика операции</xs:documentation>
+														</xs:annotation>
+													</xs:element>												
+													<xs:element name="УчастникОп" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Сведения об участнике операции</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="СтатусУчастника">
+																	<xs:annotation>
+																		<xs:documentation>Код статуса участника операции (сделки)</xs:documentation>
+																	</xs:annotation>
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:pattern value="[1-4]|6|8"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:element>
+																<xs:element name="ТипУчастника">
+																	<xs:annotation>
+																		<xs:documentation>Тип участника операции</xs:documentation>
+																	</xs:annotation>
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:pattern value="[0-5]"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:element>
+																<xs:element name="ПризнУчастника">
+																	<xs:annotation>
+																		<xs:documentation>Признак резидента (нерезидента) участника операции</xs:documentation>
+																	</xs:annotation>
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:pattern value="0|1|9"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:element>
+																<xs:element name="ПризнКлиент">
+																	<xs:annotation>
+																		<xs:documentation>Признак участника операции (сделки)</xs:documentation>
+																	</xs:annotation>
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:pattern value="[0-2]"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:element>
+																<xs:element name="КодЮЛФЛ" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>
+																			Идентификатор участника операции, включенного в Перечень, Решение, и (или) Перечень ФРОМУ
+																		</xs:documentation>
+																	</xs:annotation>
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:pattern value="[0-9]{1,10}"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:element>
+																<xs:element name="УчастникЮЛ" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>
+																			Сведения о юридическом лице (филиале юридического лица, представительстве) и его единоличном исполнительном органе
+																		</xs:documentation>
+																	</xs:annotation>
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="СведЮЛ" type="СведенияЮЛ">
+																				<xs:annotation>
+																					<xs:documentation>
+																						Сведения о юридическом лице (филиале (представительстве) юридического лица)
+																					</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:element name="СведЕИО" type="СведенияЕИО" minOccurs="0" maxOccurs="unbounded">
+																				<xs:annotation>
+																					<xs:documentation>Сведения о единоличном исполнительном органе</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:element name="НовСведЮЛ" type="СведенияЮЛ" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>
+																						Сведения о юридическом лице (филиале (представительстве) юридического лица)
+																						актуальные на дату представления информации в упол-номоченный орган (Росфинмониторинг)
+																					</xs:documentation>
+																					<xs:documentation>!!!!! Показатель удален в версии формата 1.1 !!!!!</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:element name="НовСведЕИО" type="СведенияЕИО" minOccurs="0" maxOccurs="unbounded">
+																				<xs:annotation>
+																					<xs:documentation>
+																						Сведения о единоличном исполнительном органе актуальные на дату представления
+																						информации в уполномоченный орган (Росфинмониторинг)
+																					</xs:documentation>
+																					<xs:documentation>!!!!! Показатель удален в версии формата 1.1 !!!!!</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																		</xs:sequence>	
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="УчастникФЛИП" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>
+																			Сведения о физическом лице, индивидуальном предпринимателе, физическом лице, 
+																			занимающемся в установленном законодательством Российской Федерации порядке частной практикой
+																		</xs:documentation>
+																	</xs:annotation>
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="ИдентификацияФЛ" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Признак идентификации физического лица</xs:documentation>
+																				</xs:annotation>
+																				<xs:simpleType>
+																					<xs:restriction base="xs:string">
+																						<xs:pattern value="1|2"/>
+																					</xs:restriction>
+																				</xs:simpleType>
+																			</xs:element>
+																			<xs:element name="СведФЛИП" type="СведенияФЛИП">
+																				<xs:annotation>
+																					<xs:documentation>Сведения о физическом лице, индивидуальном предпринимателе</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:element name="НовСведФЛИП" type="СведенияФЛИП" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>
+																						Сведения о физическом лице, индивидуальном предпринимателе, физическом лице, 
+																						занимающемся в установленном законодательством Российской Федерации порядке 
+																						частной практикой, актуальные на дату представления информации 
+																						в уполномоченный орган (Росфинмониторинг)
+																					</xs:documentation>
+																					<xs:documentation>!!!!! Показатель удален в версии формата 1.1 !!!!!</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="УчастникИНБОЮЛ" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>
+																			Сведения об иностранной структуре без образования юридического лица
+																		</xs:documentation>
+																	</xs:annotation>
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="СведИНБОЮЛ" type="СведенияИНБОЮЛ">
+																				<xs:annotation>
+																					<xs:documentation>Сведения об иностранной структуре без образования юридического лица</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:element name="НовСведИНБОЮЛ" type="СведенияИНБОЮЛ" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>
+																						Сведения об иностранной структуре без образования юридического лица актуальные на дату 
+																						представления информации в уполномоченный орган (Росфинмониторинг)
+																					</xs:documentation>
+																					<xs:documentation>!!!!! Показатель удален в версии формата 1.1 !!!!!</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="КомментУчастник" type="Т2000" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Дополнительная информация об участнике операции (сделки)</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="СведенияПереводыДС" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>
+																Сведения о переводах денежных средств, в том числе электронных денежных средств
+															</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="ВидПереводДС">
+																	<xs:annotation>
+																		<xs:documentation>Вид перевода денежных средств</xs:documentation>
+																	</xs:annotation>
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:pattern value="[1-9]"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:element>
+																<xs:element name="КодТерИнГос" minOccurs="0" type="Т500">
+																	<xs:annotation>
+																		<xs:documentation>Код территории</xs:documentation>
+																		<xs:documentation>
+																			!!!!! Показатель добавлен в версии формата 1.2 в соответствии с Федеральным законом от 28.06.2021 № 230-ФЗ !!!!!
+																		</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="ТипОператорДС">
+																	<xs:annotation>
+																		<xs:documentation>Тип оператора по переводу денежных средств</xs:documentation>
+																	</xs:annotation>
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:pattern value="[1-4]"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:element>
+																<xs:element name="НомерСчетПлательщик" type="Т40" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Номер счета плательщика</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="ИдентЭСППлательщик" type="Т100" minOccurs="0" maxOccurs="unbounded">
+																	<xs:annotation>
+																		<xs:documentation>Идентификатор ЭСП плательщика</xs:documentation>
+																		<xs:documentation>!!!!! Показатель не может быть множественным с версии формата 1.1 !!!!!</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="СведБанкПлательщик" type="БанкПлательщикПолучатель" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Сведения о банке плательщика</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="СведБанкПолучатель" type="БанкПлательщикПолучатель" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Сведения о банке получателя</xs:documentation>
+																	</xs:annotation>
+																</xs:element>																
+																<xs:element name="СчетБанкПлательщик" type="Т40" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Номер счета банка плательщика</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="СчетБанкПолучатель" type="Т40" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Номер счета банка получателя</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="НомерСчетПолучатель" type="Т40" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Номер счета получателя</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="ИдентЭСППолучателя" type="Т100" minOccurs="0" maxOccurs="unbounded">
+																	<xs:annotation>
+																		<xs:documentation>Идентификатор ЭСП получателя</xs:documentation>
+																		<xs:documentation>!!!!! Показатель не может быть множественным с версии формата 1.1 !!!!!</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="СведПриемНалДС" type="МестоПриемаВыдача" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Сведения о месте приема наличных денежных средств</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="СтатусПеревод" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Статус перевода</xs:documentation>
+																	</xs:annotation>
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:pattern value="0|1"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:element>
+																<xs:element name="СведВыдачаНалДС" type="МестоПриемаВыдача" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Сведения о месте выдачи наличных денежных средств</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="СведАвторизацияЭСП" type="МестоПриемаВыдача" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Сведения о месте авторизации ЭСП</xs:documentation>
+																		<xs:documentation>!!!!! Показатель удален в версии формата 1.1 !!!!!</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="АдресIP" type="Т40" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>IP-адрес сетевого оборудования плательщика</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="АдресMAC" type="Т20" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>MAC-адрес сетевого оборудования плательщика</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="СведенияВнесениеПолучениеНалДС" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>
+																Сведения о переводах денежных средств, в том числе электронных денежных средств
+															</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="КодХарактерОп">
+																	<xs:annotation>
+																		<xs:documentation>Код характера операции</xs:documentation>
+																	</xs:annotation>
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:pattern value="1|2"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:element>
+																<xs:element name="НомерСчетКлиент" type="Т40">
+																	<xs:annotation>
+																		<xs:documentation>Номер счета клиента</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="НомерКарта" type="Т40" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Номер платежной карты</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="СведПриемВыдача" type="МестоПриемаВыдача" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Сведения о месте приема (выдачи) наличных денежных средств</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="СведенияКартаИнБанк" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>
+																Сведения об операции с использованием платежной карты, эмитированной иностранным банком,
+																зарегистрированным на территории иностранного государства или административно-территориальной
+																единицы иностранного государства, обладающей самостоятельной правоспособностью, входящих в перечень,
+																утвержденный уполномоченным органом (Росфинмониторингом)
+															</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="КодТерИнБанк" type="Т500">
+																	<xs:annotation>
+																		<xs:documentation>Код территории</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="СведМестоОперация" type="МестоПриемаВыдача">
+																	<xs:annotation>
+																		<xs:documentation>Сведения о месте совершения операции с денежными средствами в наличной форме</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="НомерКарта" type="Т40">
+																	<xs:annotation>
+																		<xs:documentation>Номер платежной карты</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="СведДержательКарты" type="Т2000">
+																	<xs:annotation>
+																		<xs:documentation>Сведения о держателе платежной карты</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="ПризнакСотрудник">
+																	<xs:annotation>
+																		<xs:documentation>Признак совершения операции с участием уполномоченного сотрудника кредитной организации (филиала кредитной организации)</xs:documentation>
+																	</xs:annotation>
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:pattern value="0|1"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:element>
+																<xs:element name="НаимИнБанк" type="Т500">
+																	<xs:annotation>
+																		<xs:documentation>Наименование иностранного банка</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="СВИФТИнБанк" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>СВИФТ иностранного банка</xs:documentation>
+																	</xs:annotation>
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:pattern value="([A-Z]{4}[A-Z]{2}[0-9A-Z]{2}([0-9A-Z]{3}|))|НР"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="Коммент" type="Т2000" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Дополнительные сведения</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

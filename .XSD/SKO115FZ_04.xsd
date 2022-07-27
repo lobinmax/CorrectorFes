@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="data_types.xsd"/>
+	
+	<!-- Сообщения о результатах проверки наличия среди своих клиентов организаций и (или) физических лиц, в отношении -->
+	<!-- которых применены либо должны применяться меры по замораживанию (блокированию) денежных средств или иного имущества -->
+	<!-- (в соответствии с подпунктом 7 пункта 1 статьи 7 и (или) с пунктом 6 статьи 7.5 Федерального закона № 115-ФЗ) -->
+	<xs:element name="СообщПроверкаКлиентовКО">
+		<xs:annotation>
+			<xs:documentation>
+				Сообщения о результатах проверки наличия среди своих клиентов организаций и (или) физических лиц, в отношении 
+				которых применены либо должны применяться меры по замораживанию (блокированию) денежных средств или иного имущества
+				(в соответствии с подпунктом 7 пункта 1 статьи 7 и (или) с пунктом 6 статьи 7 Федерального закона № 115-ФЗ)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="СлужЧасть" type="СлужЧастьТип">
+					<xs:annotation>
+						<xs:documentation>Служебная часть электронного сообщения</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ИнформЧасть">
+					<xs:annotation>
+						<xs:documentation>Информационная часть электронного сообщения</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ИнфБанк" type="Банк">
+								<xs:annotation>
+									<xs:documentation>
+										Информация о кредитной организации (филиале кредитной организации), передающей (передающем) сведения
+									</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="СведКО" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="ПризнакПредставСвед">
+											<xs:annotation>
+												<xs:documentation>
+													Признак представления сведений в уполномоченный орган филиалом кредитной организации
+												</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:pattern value="0|1"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="ИнфФилиал" type="Филиал" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>
+													Информация о филиале кредитной организации, представляющем сведения
+												</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="Проверка" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Сведения о результатах проверки</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="НомерЗаписи" type="ИдентификаторЗаписи">
+														<xs:annotation>
+															<xs:documentation>Номер записи в ФЭС</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ТипЗаписи">
+														<xs:annotation>
+															<xs:documentation>Тип записи</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:pattern value="[1-4]"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="ДатаПредПров" type="ДатаТип">
+														<xs:annotation>
+															<xs:documentation>Дата предыдущей проверки</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ДатаТекПров" type="ДатаТип">
+														<xs:annotation>
+															<xs:documentation>Дата текущей проверки</xs:documentation>
+														</xs:annotation>
+													</xs:element>												
+													<xs:element name="КолОбщее" type="КоличествоКлиентов">
+														<xs:annotation>
+															<xs:documentation>
+																Количество клиентов – организаций и физических лиц, в отношении которых
+																применены меры по замораживанию (блокированию) денежных средств или иного имущества
+															</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="КолОрганизаций" type="КоличествоКлиентов">
+														<xs:annotation>
+															<xs:documentation>
+																Количество клиентов – организаций, в отношении которых применены меры по замораживанию (блокированию) денежных средств или иного имущества
+															</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="КолФизлиц" type="КоличествоКлиентов">
+														<xs:annotation>
+															<xs:documentation>
+																Количество клиентов – физических лиц, в отношении которых применены меры по замораживанию (блокированию) денежных средств или иного имущества
+															</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Кол30" type="КолвоТип">
+														<xs:annotation>
+															<xs:documentation>
+																Общее количество электронных сообщений о примененных мерах по замораживанию (блокированию) денежных средств или иного имущества
+															</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Кол0Общее" type="КоличествоКлиентов">
+														<xs:annotation>
+															<xs:documentation>
+																Количество клиентов – организаций и физических лиц, в отношении которых не были применены меры по замораживанию (блокированию) денежных средств или иного имущества
+															</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Кол0Организаций" type="КоличествоКлиентов">
+														<xs:annotation>
+															<xs:documentation>
+																Количество клиентов – организаций, в отношении которых не были применены меры по замораживанию (блокированию) денежных средств или иного имущества
+															</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Кол0Физлиц" type="КоличествоКлиентов">
+														<xs:annotation>
+															<xs:documentation>
+																Количество клиентов – физических лиц, в отношении которых не были применены меры по замораживанию (блокированию) денежных средств или иного имущества
+															</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Кол50" type="КолвоТип">
+														<xs:annotation>
+															<xs:documentation>
+																Количество электронных сообщений, направленных по клиентам – организациям и физическим лицам, 
+																в отношении которых не были приняты меры по замораживанию (блокированию) денежных средств или иного имущества.
+															</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Коммент" type="Т2000" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Дополнительная информация</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
